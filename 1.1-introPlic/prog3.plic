@@ -1,0 +1,7 @@
+programme jaipasdidee {
+    tableau [ 5 ] monTableau ;
+
+    pour i dans ( monTableau ) repeter {
+        
+    }
+}

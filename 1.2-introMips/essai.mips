@@ -1,0 +1,16 @@
+.text
+main :
+# initialiser $s7 avec $sp
+    move $s7, $sp
+
+# réserver la place pour 4 variables
+    add $sp, $sp, -16
+
+# i = 57
+    li $v0, 57
+    sw $v0, -8($s7)
+
+# syscall attend un argument dans $v0 qui est 10 ; syscall récupère le contenu de $v0, 10 pour fin de programme
+end :
+    li $v0, 10
+    syscall

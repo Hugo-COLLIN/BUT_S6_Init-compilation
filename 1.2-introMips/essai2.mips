@@ -1,0 +1,37 @@
+.text
+main :
+# initialiser $s7 avec $sp
+    move $s7, $sp
+
+# réserver la place pour 2 variables
+    add $sp, $sp, -8
+
+# i = 57
+    li $a0, 57
+    sw $a0, -4($s7)
+
+# ecrire i
+    lw $a0, -4($s7) # Charger la valeur de i pour l'affichage
+    li $v0, 1
+    syscall
+    # TODO : écrire un caractère fin de ligne
+
+# j = 2
+    li $a0, 2
+    sw $a0, 0($s7)
+
+# ecrire j
+    lw $a0, 0($s7) # Charger la valeur de j pour l'affichage
+    li $v0, 1
+    syscall
+
+# syscall attend un argument dans $v0 qui est 10 ; syscall récupère le contenu de $v0, 10 pour fin de programme
+end :
+    li $v0, 10
+    syscall
+
+
+
+
+# $a0 : valeur
+# $v0 : code de lecture

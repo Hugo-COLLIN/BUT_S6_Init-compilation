@@ -1,0 +1,3 @@
+programme hello {
+	ecrire 1234 ; // Ceci est un test
+}

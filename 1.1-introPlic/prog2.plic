@@ -1,0 +1,11 @@
+programme iteration {
+	entier i ;
+	i := 0 ;
+
+    tantque ( i < 10 ) repeter {
+        si ( i >= 3 ) alors {
+            ecrire i ;
+        }
+        i := i + 1 ;
+    }
+}
