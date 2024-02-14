@@ -1,3 +1,4 @@
+# Launch MIPS programs on MARS simulator
 .data
 str: 	.asciiz "Des caracteres ....\n"
 lus:	.space 256

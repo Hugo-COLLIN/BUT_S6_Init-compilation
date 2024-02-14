@@ -1,0 +1,116 @@
+.data
+linebreak: 	.asciiz "\n"
+
+.text
+main :
+# initialiser $s7 avec $sp
+    move $s7, $sp
+
+# réserver la place pour 4 variables
+    add $sp, $sp, -16
+
+# i = 57
+    li $a0, 57
+    sw $a0, -4($s7)
+
+# ecrire i
+    lw $a0, -4($s7) # Charger la valeur de i pour l'affichage
+    li $v0, 1
+    syscall
+
+    la $a0, linebreak   # $a0 <- adresse de la chaîne à écrire
+    li $v0, 4 	        # $v0 <- code du print
+    syscall 	        # afficher
+
+# k := i ;    l := i ;
+    lw $a0, -4($s7)
+    sw $a0, -8($s7)
+    lw $a0, -4($s7)
+    sw $a0, -12($s7)
+
+# ecrire k  ; ecrire l  ;
+    lw $a0, -8($s7) # Charger la valeur de k pour l'affichage
+    li $v0, 1
+    syscall
+
+    la $a0, linebreak   # $a0 <- adresse de la chaîne à écrire
+    li $v0, 4 	        # $v0 <- code du print
+    syscall 	        # afficher
+
+    lw $a0, -12($s7) # Charger la valeur de l pour l'affichage
+    li $v0, 1
+    syscall
+
+    la $a0, linebreak   # $a0 <- adresse de la chaîne à écrire
+    li $v0, 4 	        # $v0 <- code du print
+    syscall 	        # afficher
+
+# si ( i >= k ) alors { l := 180 ; }  sinon { l := 18 ; }  finsi
+    # si i >= k, on passe à else
+    lw $a0, -4($s7)
+    lw $a1, -8($s7)
+    bge $a0, $a1, else
+
+    # si i < k, on effectue le code suivant, puis on saute à endif pour ne pas effectuer le else
+    li $a0, 18
+    sw $a0, -12($s7)
+    j endif
+
+# sinon, on effectue le code suivant
+else :
+    li $a0, 180
+    sw $a0, -12($s7)
+
+endif :
+
+# tant que ( l > 1) { ecrire l ; l := l - 11 ; }
+loop :
+    # ecrire l
+    lw $a0, -12($s7) # Charger la valeur de l pour l'affichage
+    li $v0, 1
+    syscall
+
+    la $a0, linebreak   # $a0 <- adresse de la chaîne à écrire
+    li $v0, 4 	        # $v0 <- code du print
+    syscall 	        # afficher
+
+    # l := l - 11
+    lw $a0, -12($s7)
+    li $a1, 11
+    sub $a0, $a0, $a1
+    sw $a0, -12($s7)
+    bgtz $a0, loop
+
+# pour j dans 12 .. 22 repeter { k = k + 1 ; ecrire  k  ; }
+for:
+    # k = k + 1
+    lw $a0, -8($s7)
+    li $a1, 1
+    add $a0, $a0, $a1
+    sw $a0, -8($s7)
+
+    # ecrire k
+    lw $a0, -8($s7) # Charger la valeur de k pour l'affichage
+    li $v0, 1
+    syscall
+
+    la $a0, linebreak   # $a0 <- adresse de la chaîne à écrire
+    li $v0, 4 	        # $v0 <- code du print
+    syscall 	        # afficher
+
+    bgt $a0, $a1, endfor
+    j for
+
+endfor:
+
+
+# syscall attend un argument dans $v0 qui est 10 ; syscall récupère le contenu de $v0, 10 pour fin de programme
+end :
+    li $v0, 10
+    syscall
+
+
+
+
+# $a0 : valeur
+# $v0 : code de lecture
