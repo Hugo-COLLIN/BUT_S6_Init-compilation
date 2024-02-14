@@ -1,3 +1,6 @@
+.data
+str: 	.asciiz "\n"
+
 .text
 main :
 # initialiser $s7 avec $sp
@@ -14,7 +17,10 @@ main :
     lw $a0, -4($s7) # Charger la valeur de i pour l'affichage
     li $v0, 1
     syscall
-    # TODO : écrire un caractère fin de ligne
+
+    la $a0, str 	    # $a0 <- adresse de la chaîne à écrire
+    li $v0, 4 	        # $v0 <- code du print
+    syscall 	        # afficher
 
 # j = 2
     li $a0, 2
@@ -24,6 +30,10 @@ main :
     lw $a0, 0($s7) # Charger la valeur de j pour l'affichage
     li $v0, 1
     syscall
+
+    la $a0, str 	    # $a0 <- adresse de la chaîne à écrire
+    li $v0, 4 	        # $v0 <- code du print
+    syscall 	        # afficher
 
 # syscall attend un argument dans $v0 qui est 10 ; syscall récupère le contenu de $v0, 10 pour fin de programme
 end :
