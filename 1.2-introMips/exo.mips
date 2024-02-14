@@ -64,7 +64,7 @@ else :
 endif :
 
 # tant que ( l > 1) { ecrire l ; l := l - 11 ; }
-loop :
+while :
     # ecrire l
     lw $a0, -12($s7) # Charger la valeur de l pour l'affichage
     li $v0, 1
@@ -79,14 +79,15 @@ loop :
     li $a1, 11
     sub $a0, $a0, $a1
     sw $a0, -12($s7)
-    bgtz $a0, loop
+    bgtz $a0, while
 
 # pour j dans 12 .. 22 repeter { k = k + 1 ; ecrire  k  ; }
-    li $t0, 12 # Initialiser j à 12
-    #li $a0, 12
-    #sw $a0, 0($s7)
+    li $a0, 12
+    sw $a0, 0($s7)
 
-for_loop:
+for:
+    # Charger la valeur actuelle de j pour la comparaison
+    lw $t0, 0($s7)
     bgt $t0, 22, endfor # Sortir de la boucle si j > 22
 
     # k = k + 1
@@ -102,8 +103,12 @@ for_loop:
     li $v0, 4
     syscall
 
-    addi $t0, $t0, 1 # Incrémenter j
-    j for_loop
+    # Incrémenter j
+    lw $a0, 0($s7)
+    addi $a0, $a0, 1
+    sw $a0, 0($s7)
+
+    j for
 
 endfor:
 
@@ -112,9 +117,3 @@ endfor:
 end :
     li $v0, 10
     syscall
-
-
-
-
-# $a0 : valeur
-# $v0 : code de lecture
