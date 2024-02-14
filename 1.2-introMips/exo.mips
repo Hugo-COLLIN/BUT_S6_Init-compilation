@@ -82,24 +82,28 @@ loop :
     bgtz $a0, loop
 
 # pour j dans 12 .. 22 repeter { k = k + 1 ; ecrire  k  ; }
-for:
+    li $t0, 12 # Initialiser j à 12
+    #li $a0, 12
+    #sw $a0, 0($s7)
+
+for_loop:
+    bgt $t0, 22, endfor # Sortir de la boucle si j > 22
+
     # k = k + 1
     lw $a0, -8($s7)
-    li $a1, 1
-    add $a0, $a0, $a1
+    addi $a0, $a0, 1
     sw $a0, -8($s7)
 
     # ecrire k
-    lw $a0, -8($s7) # Charger la valeur de k pour l'affichage
     li $v0, 1
     syscall
 
-    la $a0, linebreak   # $a0 <- adresse de la chaîne à écrire
-    li $v0, 4 	        # $v0 <- code du print
-    syscall 	        # afficher
+    la $a0, linebreak
+    li $v0, 4
+    syscall
 
-    bgt $a0, $a1, endfor
-    j for
+    addi $t0, $t0, 1 # Incrémenter j
+    j for_loop
 
 endfor:
 
